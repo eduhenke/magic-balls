@@ -1,0 +1,20 @@
+table, td {
+    border: 1px solid black;
+}
+
+td {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+.ball {
+    height: 50px;
+    width: 50px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;   
+}
