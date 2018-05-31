@@ -2,14 +2,14 @@ function Table(width, height) {
     var rows = [];
     var tableEl = document.createElement("TABLE");
 
-    for (var i = 0; i < height; i++) {
-        var row = tableEl.insertRow(i);
-        rows[i] = [];
-        for (var j = 0; j < width; j++) {
-            var cellElement = row.insertCell(j);
-            cell = new Cell(i, j, cellElement);
-            rows[i][j] = cell;
-            cellElement.onclick = cellClickHandler(cell);
+    for (var y = 0; y < height; y++) {
+        var row = tableEl.insertRow(y);
+        rows[y] = [];
+        for (var x = 0; x < width; x++) {
+            var cellElement = row.insertCell(x);
+            cell = new Cell(x, y, cellElement);
+            rows[y][x] = cell;
+            cellElement.onclick = cellClickHandler(this, cell);
         }
     }
     this.el = tableEl;
@@ -44,9 +44,17 @@ Table.prototype.getNeighbours = function(x, y) {
     return neighbours;
 }
 
-function cellClickHandler(cell) {
+function cellClickHandler(table, cell) {
     return function () {
         cell.addBall();
+        var neighbours = table.getNeighbours(cell.x, cell.y);
+        var threshold = neighbours.length;
+        if (cell.balls >= threshold) {
+            cell.removeBalls(threshold);
+            neighbours.forEach(cell => {
+                cell.addBall();
+            });
+        }
     }
 }
 
