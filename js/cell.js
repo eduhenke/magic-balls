@@ -6,15 +6,16 @@ function Cell(x, y, el, owner) {
     this.owner = owner;
 }
 
-function createBall() {
+function createBall(color) {
     var el = document.createElement("SPAN");
     el.className = "ball";
+    el.style.backgroundColor = color;
     return el
 }
 
-Cell.prototype.addBall = function () {
+Cell.prototype.addBall = function (color) {
     this.balls++;
-    var ball = createBall();
+    var ball = createBall(color);
     this.el.appendChild(ball);
 }
 

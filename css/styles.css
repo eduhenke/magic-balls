@@ -16,5 +16,14 @@ table {
     width: 50px;
     background-color: green;
     border-radius: 50%;
-    display: inline-block;   
+    display: inline-block;
+}
+
+#game {
+    margin-top: 3%;
+    margin-left: 25%;
+    margin-bottom: 3%;
+}
+.container {
+    text-align: center;
 }

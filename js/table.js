@@ -1,7 +1,8 @@
 function Table(width, height) {
     var rows = [];
     var tableEl = document.createElement("TABLE");
-
+    players = ['Green', 'Red', 'Blue', 'Yellow', 'Purple'].slice(0, nPlayers);
+    index = 0
     for (var y = 0; y < height; y++) {
         var row = tableEl.insertRow(y);
         rows[y] = [];
@@ -44,21 +45,33 @@ Table.prototype.getNeighbours = function(x, y) {
     return neighbours;
 }
 
+
+
+function switchPlayer() {
+  if (index < nPlayers - 1) {
+    index += 1;
+  }
+  else {
+    index = 0;
+  }
+}
+
 function explode(table, cell) {
     var neighbours = table.getNeighbours(cell.x, cell.y);
     var threshold = neighbours.length;
     if (cell.balls >= threshold) {
         cell.removeBalls(threshold);
         neighbours.forEach(cell => {
-            cell.addBall();
+            cell.addBall(players[index]);
             explode(table, cell);
         });
-}
+      }
 }
 
 function cellClickHandler(table, cell) {
     return function () {
-        cell.addBall();
+        cell.addBall(players[index]);
         explode(table, cell);
+        switchPlayer();
         }
     }
