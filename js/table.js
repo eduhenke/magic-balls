@@ -44,17 +44,21 @@ Table.prototype.getNeighbours = function(x, y) {
     return neighbours;
 }
 
+function explode(table, cell) {
+    var neighbours = table.getNeighbours(cell.x, cell.y);
+    var threshold = neighbours.length;
+    if (cell.balls >= threshold) {
+        cell.removeBalls(threshold);
+        neighbours.forEach(cell => {
+            cell.addBall();
+            explode(table, cell);
+        });
+}
+}
+
 function cellClickHandler(table, cell) {
     return function () {
         cell.addBall();
-        var neighbours = table.getNeighbours(cell.x, cell.y);
-        var threshold = neighbours.length;
-        if (cell.balls >= threshold) {
-            cell.removeBalls(threshold);
-            neighbours.forEach(cell => {
-                cell.addBall();
-            });
+        explode(table, cell);
         }
     }
-}
-
