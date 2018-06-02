@@ -64,6 +64,11 @@ function createBall(color) {
     return el
 }
 
+function colorCells(color, neighbours){
+    for (var i = 0; i < neighbours.length; i++){
+        neighbours[i].changeColor(color)
+    }
+}
 
 function explode(table, cell) {
     var neighbours = table.getNeighbours(cell.x, cell.y);
@@ -72,7 +77,7 @@ function explode(table, cell) {
         cell.removeBalls(threshold);
         neighbours.forEach(cell => {
             cell.addBall(players[index]);
-            cell.changeCollor(players[index], neighbours);
+            colorCells(players[index], neighbours);
             explode(table, cell);
         });
       }
