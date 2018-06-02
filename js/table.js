@@ -72,7 +72,7 @@ function explode(table, cell) {
         cell.removeBalls(threshold);
         neighbours.forEach(cell => {
             cell.addBall(players[index]);
-            cell.changeCollor(players[index]);
+            cell.changeCollor(players[index], neighbours);
             explode(table, cell);
         });
       }

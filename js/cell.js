@@ -13,11 +13,13 @@ function createBall(color) {
     return el
 }
 
-Cell.prototype.changeCollor = function (color) {
-    var balls = document.getElementsByTagName("SPAN")
-    n = balls.length;
-    for (var i = 0; i < n; i++){
-        balls[i].style.backgroundColor = color;
+Cell.prototype.changeCollor = function (color,neighbours) {
+    for (var i = 0; i < neighbours.length; i++){
+        var balls = neighbours[i].el;
+        nBalls = balls.children.length;
+        for (var j = 0; j < nBalls; j++){
+            balls.children[j].style.backgroundColor = color;
+        }
     }
 }
 
