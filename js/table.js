@@ -1,3 +1,5 @@
+var teste = document.getElementsByClassName('ball');
+
 function Table(width, height) {
     var rows = [];
     var tableEl = document.createElement("TABLE");
@@ -55,6 +57,13 @@ function switchPlayer() {
     index = 0;
   }
 }
+function createBall(color) {
+    var el = document.createElement("SPAN");
+    el.className = "ball";
+    el.style.backgroundColor = color;
+    return el
+}
+
 
 function explode(table, cell) {
     var neighbours = table.getNeighbours(cell.x, cell.y);
@@ -63,6 +72,7 @@ function explode(table, cell) {
         cell.removeBalls(threshold);
         neighbours.forEach(cell => {
             cell.addBall(players[index]);
+            cell.changeCollor(players[index]);
             explode(table, cell);
         });
       }

@@ -13,6 +13,14 @@ function createBall(color) {
     return el
 }
 
+Cell.prototype.changeCollor = function (color) {
+    var balls = document.getElementsByTagName("SPAN")
+    n = balls.length;
+    for (var i = 0; i < n; i++){
+        balls[i].style.backgroundColor = color;
+    }
+}
+
 Cell.prototype.addBall = function (color) {
     this.balls++;
     var ball = createBall(color);
@@ -31,3 +39,4 @@ Cell.prototype.removeBalls = function (n) {
         this.removeBall();
     }
 }
+
