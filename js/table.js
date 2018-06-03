@@ -1,4 +1,4 @@
-function Table(width, height, stateHandler) {
+function Table(width, height, handleState) {
     var rows = [];
     var tableEl = document.createElement("TABLE");
     for (var y = 0; y < height; y++) {
@@ -8,9 +8,9 @@ function Table(width, height, stateHandler) {
             var cellElement = row.insertCell(x);
             var cell = new Cell(x, y, cellElement);
             rows[y][x] = cell;
-            cellElement.onclick = function() {
+            cellElement.onclick = function(cell) {
                 return function() {
-                    stateHandler(cell);
+                    handleState(cell);
                 }
             }(cell);
         }
@@ -47,16 +47,9 @@ Table.prototype.getNeighbours = function(x, y) {
     return neighbours;
 }
 
-function createBall(color) {
-    var el = document.createElement("SPAN");
-    el.className = "ball";
-    el.style.backgroundColor = color;
-    return el
-}
-
-function colorCells(color, neighbours){
-    for (var i = 0; i < neighbours.length; i++){
-        neighbours[i].changeColor(color)
+function colorCells(color, cells){
+    for (var i = 0; i < cells.length; i++){
+        cells[i].changeColor(color)
     }
 }
 

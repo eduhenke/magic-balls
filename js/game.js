@@ -3,7 +3,6 @@ var possiblePlayers = [
 ]
 
 function Game(nPlayers, width, height, container){
-    // var table = new Table(width, height);
     this.table = new Table(width, height, this.handleState.bind(this));
     container.appendChild(this.table.el);
     this.players = possiblePlayers.slice(0, nPlayers);
