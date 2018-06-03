@@ -58,6 +58,9 @@ function explode(table, cell) {
     var neighbours = table.getNeighbours(cell.x, cell.y);
     var threshold = neighbours.length;
     if (cell.balls >= threshold) {
+        setTimeout(triggerNeighbours, 1000);
+    }
+    function triggerNeighbours() {
         cell.removeBalls(threshold);
         neighbours.forEach(n => {
             n.owner = cell.owner;
