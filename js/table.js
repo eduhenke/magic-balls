@@ -6,9 +6,13 @@ function Table(width, height, stateHandler) {
         rows[y] = [];
         for (var x = 0; x < width; x++) {
             var cellElement = row.insertCell(x);
-            cell = new Cell(x, y, cellElement);
+            var cell = new Cell(x, y, cellElement);
             rows[y][x] = cell;
-            cellElement.onclick = cellClickHandler(this, cell, stateHandler);
+            cellElement.onclick = function() {
+                return function() {
+                    stateHandler(cell);
+                }
+            }(cell);
         }
     }
     this.el = tableEl;
@@ -67,12 +71,9 @@ function explode(table, cell) {
             explode(table, n);
             colorCells(cell.owner, neighbours);
         });
+        if (cell.balls == 0) {
+            cell.owner = undefined;
+        }
     }
 }
 
-function cellClickHandler(table, cell, stateHandler) {
-    return function () {
-        stateHandler(cell);
-        explode(table, cell);
-    }
-}

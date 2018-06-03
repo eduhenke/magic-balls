@@ -19,6 +19,12 @@ Game.prototype.switchPlayer = function() {
 }
 
 Game.prototype.handleState = function(cell) {
-    cell.owner = this.currentPlayer();
+    if (!cell.owner) {
+        cell.owner = this.currentPlayer();
+    }
+    if (cell.owner !== this.currentPlayer()) {
+        return
+    }
+    explode(this.table, cell)
     this.switchPlayer();
 }
