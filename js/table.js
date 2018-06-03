@@ -8,8 +8,8 @@ function Table(width, height, handleState) {
             var cellElement = row.insertCell(x);
             var cell = new Cell(x, y, cellElement);
             rows[y][x] = cell;
-            cellElement.onclick = function(cell) {
-                return function() {
+            cellElement.onclick = function (cell) {
+                return function () {
                     handleState(cell);
                 }
             }(cell);
@@ -19,7 +19,7 @@ function Table(width, height, handleState) {
     this.rows = rows;
 }
 
-Table.prototype.getNeighbours = function(x, y) {
+Table.prototype.getNeighbours = function (x, y) {
     var neighbours = [],
         upRow = this.rows[y - 1],
         downRow = this.rows[y + 1],
@@ -47,26 +47,38 @@ Table.prototype.getNeighbours = function(x, y) {
     return neighbours;
 }
 
-function colorCells(color, cells){
-    for (var i = 0; i < cells.length; i++){
-        cells[i].changeColor(color)
+function colorCells(color, cells) {
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].changeColor(color);
     }
 }
 
-function explode(table, cell) {
+function handleClick(table, cell, explosions, depth) {
+    depth++;
     cell.addBall();
     var neighbours = table.getNeighbours(cell.x, cell.y);
     var threshold = neighbours.length;
     if (cell.balls >= threshold) {
+        explode();
+    }
+
+    function explode() {
+        if (!explosions[depth]) {
+            explosions[depth] = [];
+        }
+        explosions[depth].push(cell);
         cell.removeBalls(threshold);
-        neighbours.forEach(n => {
-            n.owner = cell.owner;
-            explode(table, n);
-            colorCells(cell.owner, neighbours);
-        });
+        triggerNeighbours();
         if (cell.balls == 0) {
             cell.owner = undefined;
         }
+    }
+    function triggerNeighbours() {
+        neighbours.forEach(function(n) {
+            n.owner = cell.owner;
+            handleClick(table, n, explosions, depth);
+            colorCells(cell.owner, neighbours);
+        });
     }
 }
 

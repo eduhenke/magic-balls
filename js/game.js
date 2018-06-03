@@ -24,6 +24,8 @@ Game.prototype.handleState = function(cell) {
     if (cell.owner !== this.currentPlayer()) {
         return
     }
-    explode(this.table, cell)
+    explosions = {};
+    depth = 0;
+    handleClick(this.table, cell, explosions, depth);
     this.switchPlayer();
 }
