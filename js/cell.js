@@ -20,9 +20,9 @@ Cell.prototype.changeColor = function (color) {
     }
 }
 
-Cell.prototype.addBall = function (color) {
+Cell.prototype.addBall = function () {
     this.balls++;
-    var ball = createBall(color);
+    var ball = createBall(this.owner);
     this.el.appendChild(ball);
 }
 
