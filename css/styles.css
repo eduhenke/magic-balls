@@ -3,8 +3,8 @@ table, td {
 }
 
 td {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     text-align: center;
 }
 
@@ -14,7 +14,15 @@ table {
 .ball {
     height: 50px;
     width: 50px;
-    background-color: green;
     border-radius: 50%;
-    display: inline-block;   
+    display: inline-block;
+}
+
+#game {
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-bottom: 3%;
+}
+.container {
+    text-align: center;
 }

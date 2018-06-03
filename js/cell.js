@@ -6,15 +6,23 @@ function Cell(x, y, el, owner) {
     this.owner = owner;
 }
 
-function createBall() {
+function createBall(color) {
     var el = document.createElement("SPAN");
     el.className = "ball";
+    el.style.backgroundColor = color;
     return el
+}
+
+Cell.prototype.changeColor = function (color) {
+    balls = this.el.children;
+    for (var j = 0; j < balls.length; j++){
+        balls[j].style.backgroundColor = color;
+    }
 }
 
 Cell.prototype.addBall = function () {
     this.balls++;
-    var ball = createBall();
+    var ball = createBall(this.owner);
     this.el.appendChild(ball);
 }
 
@@ -30,3 +38,4 @@ Cell.prototype.removeBalls = function (n) {
         this.removeBall();
     }
 }
+

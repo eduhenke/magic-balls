@@ -1,15 +1,18 @@
-function Table(width, height) {
+function Table(width, height, handleState) {
     var rows = [];
     var tableEl = document.createElement("TABLE");
-
     for (var y = 0; y < height; y++) {
         var row = tableEl.insertRow(y);
         rows[y] = [];
         for (var x = 0; x < width; x++) {
             var cellElement = row.insertCell(x);
-            cell = new Cell(x, y, cellElement);
+            var cell = new Cell(x, y, cellElement);
             rows[y][x] = cell;
-            cellElement.onclick = cellClickHandler(this, cell);
+            cellElement.onclick = function(cell) {
+                return function() {
+                    handleState(cell);
+                }
+            }(cell);
         }
     }
     this.el = tableEl;
@@ -44,16 +47,25 @@ Table.prototype.getNeighbours = function(x, y) {
     return neighbours;
 }
 
-function cellClickHandler(table, cell) {
-    return function () {
-        cell.addBall();
-        var neighbours = table.getNeighbours(cell.x, cell.y);
-        var threshold = neighbours.length;
-        if (cell.balls >= threshold) {
-            cell.removeBalls(threshold);
-            neighbours.forEach(cell => {
-                cell.addBall();
-            });
+function colorCells(color, cells){
+    for (var i = 0; i < cells.length; i++){
+        cells[i].changeColor(color)
+    }
+}
+
+function explode(table, cell) {
+    cell.addBall();
+    var neighbours = table.getNeighbours(cell.x, cell.y);
+    var threshold = neighbours.length;
+    if (cell.balls >= threshold) {
+        cell.removeBalls(threshold);
+        neighbours.forEach(n => {
+            n.owner = cell.owner;
+            explode(table, n);
+            colorCells(cell.owner, neighbours);
+        });
+        if (cell.balls == 0) {
+            cell.owner = undefined;
         }
     }
 }
