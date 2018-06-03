@@ -1,5 +1,6 @@
 function Table(width, height, handleState) {
     var rows = [];
+    var cells = []; // TODO: squash/splat rows array
     var tableEl = document.createElement("TABLE");
     for (var y = 0; y < height; y++) {
         var row = tableEl.insertRow(y);
@@ -7,6 +8,7 @@ function Table(width, height, handleState) {
         for (var x = 0; x < width; x++) {
             var cellElement = row.insertCell(x);
             var cell = new Cell(x, y, cellElement);
+            cells.push(cell);
             rows[y][x] = cell;
             cellElement.onclick = function (cell) {
                 return function () {
@@ -15,12 +17,15 @@ function Table(width, height, handleState) {
             }(cell);
         }
     }
+    this.cells = cells;
     this.el = tableEl;
     this.rows = rows;
 }
 
-Table.prototype.getNeighbours = function (x, y) {
-    var neighbours = [],
+Table.prototype.getNeighbours = function (cell) {
+    var x = cell.x,
+        y = cell.y,
+        neighbours = [],
         upRow = this.rows[y - 1],
         downRow = this.rows[y + 1],
         row = this.rows[y],
@@ -54,9 +59,8 @@ function colorCells(color, cells) {
 }
 
 function handleClick(table, cell, explosions, depth) {
-    depth++;
-    cell.addBall();
-    var neighbours = table.getNeighbours(cell.x, cell.y);
+    cell.balls++;
+    var neighbours = table.getNeighbours(cell);
     var threshold = neighbours.length;
     if (cell.balls >= threshold) {
         explode();
@@ -67,14 +71,12 @@ function handleClick(table, cell, explosions, depth) {
             explosions[depth] = [];
         }
         explosions[depth].push(cell);
-        cell.removeBalls(threshold);
+        depth++;
+        cell.balls -= threshold;
         triggerNeighbours();
-        if (cell.balls == 0) {
-            cell.owner = undefined;
-        }
     }
     function triggerNeighbours() {
-        neighbours.forEach(function(n) {
+        neighbours.forEach(function (n) {
             n.owner = cell.owner;
             handleClick(table, n, explosions, depth);
             colorCells(cell.owner, neighbours);

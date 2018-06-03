@@ -15,22 +15,38 @@ function createBall(color) {
 
 Cell.prototype.changeColor = function (color) {
     balls = this.el.children;
-    for (var j = 0; j < balls.length; j++){
+    for (var j = 0; j < balls.length; j++) {
         balls[j].style.backgroundColor = color;
     }
 }
 
 Cell.prototype.addBall = function () {
-    this.balls++;
     var ball = createBall(this.owner);
     this.el.appendChild(ball);
 }
 
+Cell.prototype.addBalls = function (n) {
+    for (var i = 0; i < n; i++) {
+        this.addBall();
+    }
+}
+
 Cell.prototype.removeBall = function () {
-    this.balls--;
+    this.el.removeChild(this.getLastBall());
+}
+Cell.prototype.setBalls = function (num) {
+    var delta = num - this.el.childNodes.length;
+    if (delta > 0) {
+        this.addBalls(delta);
+    }
+    if (delta < 0) {
+        this.removeBalls(delta);
+    }
+}
+
+Cell.prototype.getLastBall = function () {
     var childs = this.el.childNodes;
-    var lastEl = childs[childs.length - 1];
-    this.el.removeChild(lastEl);
+    return lastEl = childs[childs.length - 1];
 }
 
 Cell.prototype.removeBalls = function (n) {
